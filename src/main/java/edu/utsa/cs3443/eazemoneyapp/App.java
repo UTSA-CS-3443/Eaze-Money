@@ -1,24 +1,22 @@
 package edu.utsa.cs3443.eazemoneyapp;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import edu.utsa.cs3443.eazemoneyapp.util.Navigator;
+import edu.utsa.cs3443.eazemoneyapp.util.Page;
 
-import java.io.IOException;
-
+/** JavaFX entry point: creates the window and shows the starting page. */
 public class App extends Application {
+
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("view/hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1024, 720);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
+    public void start(Stage stage) {
+        stage.setTitle("Eaze Money");
+        Navigator.init(stage);
+        Navigator.showPage(Page.STARTING);
         stage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-
 }
