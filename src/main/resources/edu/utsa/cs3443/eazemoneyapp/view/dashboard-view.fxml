@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+
+<!-- Example page. Its controller must extend BaseController. -->
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.DashboardController" spacing="15">
+    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+    <Label fx:id="welcomeLabel" styleClass="page-title"/>
+</VBox>
