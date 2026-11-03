@@ -27,7 +27,7 @@ import java.net.URL;
 public final class Navigator {
 
     private static final String SIDEBAR_VIEW_FXML = "/edu/utsa/cs3443/eazemoneyapp/view/sidebar-view.fxml";
-    private static final String STYLESHEET = "/edu/utsa/cs3443/eazemoneyapp/css/styles.css";
+    private static final String STYLESHEET = "/edu/utsa/cs3443/eazemoneyapp/css/style.css";
 
     private static Stage stage;
     private static BorderPane mainLayout;   // null whenever a full-window page is showing
