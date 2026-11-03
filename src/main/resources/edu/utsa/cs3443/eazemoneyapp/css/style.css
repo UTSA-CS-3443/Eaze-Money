@@ -8,3 +8,25 @@
     -color-black: #212121;
     -color-white: #E2E2E2;
 }
+
+.sidebar {
+    -fx-background-color: -color2;
+}
+
+.sidebar .button {
+    -fx-background-color: -color2;
+    -fx-text-fill: -color-white;
+    -fx-padding: 10px 8px;
+    -fx-alignment: center-left;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.sidebar .button.active {
+    -fx-background-color: -color-white;
+    -fx-text-fill: -color2;
+}
+
+.sidebar .button:hover {
+    -fx-background-color: -color3;
+}
