@@ -2,6 +2,7 @@ package edu.utsa.cs3443.eazemoneyapp.util;
 
 import edu.utsa.cs3443.eazemoneyapp.Session;
 import edu.utsa.cs3443.eazemoneyapp.controller.BaseController;
+import edu.utsa.cs3443.eazemoneyapp.controller.SideBarController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,6 +32,7 @@ public final class Navigator {
 
     private static Stage stage;
     private static BorderPane mainLayout;   // null whenever a full-window page is showing
+    private static SideBarController sidebarController;
 
     private Navigator() { }
 
@@ -67,8 +69,10 @@ public final class Navigator {
             if (scene.getRoot() != mainLayout) {
                 scene.setRoot(mainLayout);
             }
+            sidebarController.setActivePage(page);
         } else {
             mainLayout = null;
+            sidebarController = null;
             scene.setRoot(content);
         }
 
@@ -88,7 +92,9 @@ public final class Navigator {
 
     private static BorderPane loadMainLayout() {
         FXMLLoader loader = newLoader(SIDEBAR_VIEW_FXML);
-        return (BorderPane) load(loader, SIDEBAR_VIEW_FXML);
+        BorderPane layout = (BorderPane) load(loader, SIDEBAR_VIEW_FXML);
+        sidebarController = loader.getController();
+        return layout;
     }
 
     private static FXMLLoader newLoader(String fxmlPath) {
