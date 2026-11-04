@@ -2,6 +2,7 @@ package edu.utsa.cs3443.eazemoneyapp.controller;
 
 import edu.utsa.cs3443.eazemoneyapp.Session;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import edu.utsa.cs3443.eazemoneyapp.util.Navigator;
 import edu.utsa.cs3443.eazemoneyapp.util.Page;
@@ -13,6 +14,32 @@ import edu.utsa.cs3443.eazemoneyapp.util.Page;
 public class SideBarController {
 
     @FXML private Label userLabel;
+    @FXML private Button dashboardButton;
+    @FXML private Button transactionsButton;
+    @FXML private Button budgetsButton;
+    @FXML private Button walletsButton;
+
+    /**
+     * Handle changing the color of the buttons when they are clicked on
+     *
+     * @param page the page corresponding to the button
+     */
+    public void setActivePage(Page page) {
+        dashboardButton.getStyleClass().remove("active");
+        transactionsButton.getStyleClass().remove("active");
+        budgetsButton.getStyleClass().remove("active");
+        walletsButton.getStyleClass().remove("active");
+
+        if (page == Page.DASHBOARD) {
+            dashboardButton.getStyleClass().add("active");
+        } else if (page == Page.TRANSACTIONS) {
+            transactionsButton.getStyleClass().add("active");
+        } else if (page == Page.BUDGETS) {
+            budgetsButton.getStyleClass().add("active");
+        } else if (page == Page.WALLETS) {
+            walletsButton.getStyleClass().add("active");
+        }
+    }
 
     /** Runs once, right after the FXML is loaded (after login, so the account exists). */
     @FXML
