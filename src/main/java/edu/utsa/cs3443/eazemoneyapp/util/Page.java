@@ -14,6 +14,7 @@ public enum Page {
     LOGIN("/edu/utsa/cs3443/eazemoneyapp/view/login-view.fxml", false),
     REGISTER("/edu/utsa/cs3443/eazemoneyapp/view/register-view.fxml", false),
     ONBOARDING("/edu/utsa/cs3443/eazemoneyapp/view/onboarding-view.fxml", false),
+    FORGOT_PASSWORD("/edu/utsa/cs3443/eazemoneyapp/view/forgot-password-view.fxml", false),
 
     // Pages shown to the right of the sidebar
     DASHBOARD("/edu/utsa/cs3443/eazemoneyapp/view/dashboard-view.fxml", true),
