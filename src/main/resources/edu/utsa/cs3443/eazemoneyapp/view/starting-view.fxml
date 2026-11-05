@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="landing" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.LandingController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-Infinity" prefWidth="-Infinity" styleClass="landing" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.StartingController">
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="12.0" styleClass="landing-topbar" BorderPane.alignment="CENTER_LEFT">
          <children>
@@ -28,12 +28,12 @@
    <center>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="56.0" styleClass="landing-hero" BorderPane.alignment="CENTER_RIGHT">
          <children>
-            <VBox alignment="CENTER" maxWidth="520.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER_LEFT" maxWidth="520.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label styleClass="landing-tag" text="Free. Works offline. Data stays  on your computer" />
                   <Label styleClass="landing-headline" text="Know where every dollar goes" wrapText="true" />
                   <Label styleClass="landing-subtitle" text="Track spending across all your wallets, set monthly limits, and see your progress at a glance — all in one window." />
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0">
+                  <HBox alignment="CENTER_LEFT" spacing="12.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#onRegister" styleClass="button-primary" text="Get Started" />
                         <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onLogin" styleClass="button-secondary" text="SIgn in" />
