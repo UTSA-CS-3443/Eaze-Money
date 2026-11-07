@@ -1,3 +1,4 @@
 walletId,walletName,startingBalance
-w1001,Cash,100.00
-w1002,Checking,2500.50
+w1001,Cash,250.00
+w1002,Checking,3200.00
+w1003,Saving,8000.00
