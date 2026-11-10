@@ -1,15 +1,19 @@
 package edu.utsa.cs3443.eazemoneyapp.model.wallet;
 
-import edu.utsa.cs3443.eazemoneyapp.model.budgets.Budget;
+import edu.utsa.cs3443.eazemoneyapp.model.transactions.Transaction;
+import edu.utsa.cs3443.eazemoneyapp.model.transactions.TransactionList;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * All wallets of one user, backed by data/{userId}/wallets.csv.
@@ -67,6 +71,26 @@ public class WalletList {
     /** Read-only view retained for callers using the previous accessor name. */
     public List<Wallet> getAll() {
         return getWallets();
+    }
+
+    /** Loads a user's wallets and returns their balances after applying transactions. */
+    public Map<String, BigDecimal> loadWalletBalances(String userId) throws IOException {
+        loadWallets(userId);
+
+        Map<String, BigDecimal> balances = new LinkedHashMap<>();
+        for (Wallet wallet : wallets) {
+            balances.put(wallet.getWalletId(), BigDecimal.valueOf(wallet.getStartingBalance()));
+        }
+
+        TransactionList transactionList = new TransactionList(userId);
+        transactionList.loadTransactions();
+        for (Transaction transaction : transactionList.getTransactions()) {
+            BigDecimal balance = balances.get(transaction.getWalletId());
+            if (balance != null) {
+                balances.put(transaction.getWalletId(), balance.add(transaction.getAmount()));
+            }
+        }
+        return balances;
     }
 
     /** @return the wallet with this id, or null if there is none */

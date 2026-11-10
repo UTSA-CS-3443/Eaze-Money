@@ -18,7 +18,6 @@
             <ImageView fitWidth="160" fitHeight="80" preserveRatio="true">
                 <image><Image url="@../images/logo.png"/></image>
             </ImageView>
-            <Label fx:id="userLabel" styleClass="sidebar-title"/>
             <Button fx:id="dashboardButton" text="Dashboard" styleClass="sidebar-button" maxWidth="Infinity" onAction="#onDashboard"/>
             <Button fx:id="transactionsButton" text="Transactions" styleClass="sidebar-button" maxWidth="Infinity" onAction="#onTransactions"/>
             <Button fx:id="budgetsButton" text="Budgets" styleClass="sidebar-button" maxWidth="Infinity" onAction="#onBudgets"/>

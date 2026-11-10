@@ -1,4 +1,11 @@
 budgetId,budgetName,budgetAmount,category,budgetPeriod
-b1001,Food Budget,300.00,FOOD,MONTHLY
-b1002,Subscriptions Budget,50.00,SUBSCRIPTIONS,MONTHLY
-b1003,Transportation Budget,100.00,TRANSPORTATION,WEEKLY
+b1001,Rent Budget,650.00,RENT,MONTHLY
+b1002,Groceries Budget,350.00,GROCERIES,MONTHLY
+b1003,Dining Out Budget,50.00,DINING,WEEKLY
+b1004,Utilities Budget,180.00,UTILITIES,MONTHLY
+b1005,Transportation Budget,65.00,TRANSPORTATION,WEEKLY
+b1006,Subscriptions Budget,35.00,SUBSCRIPTIONS,MONTHLY
+b1007,Entertainment Budget,80.00,ENTERTAINMENT,MONTHLY
+b1008,Healthcare Budget,100.00,HEALTHCARE,MONTHLY
+b1009,Shopping Budget,150.00,SHOPPING,MONTHLY
+b1010,Travel Budget,200.00,TRAVEL,MONTHLY
