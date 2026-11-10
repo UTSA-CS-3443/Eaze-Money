@@ -72,3 +72,42 @@
     -fx-text-fill: -color-black;
     -fx-font-size: 16px;
 }
+
+.dashboard-page {
+    -fx-spacing: 16px;
+}
+
+.dashboard-top {
+    -fx-spacing: 18px;
+}
+
+.dashboard-summary-card {
+    -fx-background-color: -color3;
+    -fx-background-radius: 12px;
+    -fx-padding: 24px;
+    -fx-min-height: 120px;
+    -fx-alignment: center-left;
+}
+
+.dashboard-summary-card .label {
+    -fx-text-fill: -color-white;
+}
+
+.dashboard-summary-title {
+    -fx-font-size: 16px;
+}
+
+.dashboard-summary-value {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.dashboard-middle {
+    -fx-background-color: -color4;
+    -fx-background-radius: 12px;
+}
+
+.dashboard-bottom {
+    -fx-background-color: -color5;
+    -fx-background-radius: 12px;
+}

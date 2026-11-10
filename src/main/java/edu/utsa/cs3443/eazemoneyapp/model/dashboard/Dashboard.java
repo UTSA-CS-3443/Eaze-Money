@@ -56,7 +56,7 @@ public class Dashboard {
         transactionList.loadTransactions();
         for (Transaction transaction : transactionList.getTransactions()) {
             if (transaction.getAmount().signum() < 0) {
-                expense = expense.add(transaction.getAmount());
+                expense = expense.add(transaction.getAmount().abs());
             }
         }
         return expense;
