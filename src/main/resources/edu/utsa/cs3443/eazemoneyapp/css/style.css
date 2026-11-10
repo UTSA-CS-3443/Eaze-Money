@@ -5,8 +5,28 @@
     -color4: #296A6D;
     -color5: #295966;
     -color6: #2F4858;
+    -color7: #E3EFE9;
+    -color8: #6B7380;
+    -color9: #DEE0E6;
+    -color10: #F2F4F4;
     -color-black: #212121;
     -color-white: #E2E2E2;
+
+    /* Role names: what each color is used for */
+    -primary: -color3;          /* primary buttons, links, active items */
+    -primary-hover: -color4;    /* primary button on hover */
+    -primary-dark: -color6;     /* titles, brand text, dark panels */
+    -primary-soft: -color7;     /* light green tag / highlight background */
+    -accent: -color1;           /* small highlights, icons, charts */
+    -sidebar-bg: -color2;       /* sidebar background */
+    -line: -color9;             /* borders, dividers*/
+    -muted: -color8;            /* hints, secondary text */
+
+    /* Neutral colors (from Figma) */
+    -ink: #171A1F;              /* main text */
+    -bg: #F7FAFA;               /* page background */
+    -error: #CC2626;            /* error text and borders */
+    -error-soft: #FFF0F0;       /* error banner background */
 }
 
 .sidebar {
@@ -31,6 +51,93 @@
     -fx-background-color: -color3;
 }
 
+/* ===== Shared buttons (Landing, Sign in, Create account, Forgot password) ===== */
+.button-primary{
+    -fx-background-color: -primary;
+    -fx-text-fill: -color-white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-pref-height: 44;
+    -fx-padding: 0 22 0 22;
+    -fx-cursor: hand;
+}
+
+.button-primary:hover{
+    -fx-background-color: -primary-hover;
+}
+
+.button-secondary{
+    -fx-background-color: -color-white;
+    -fx-text-fill: -primary-dark;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-border-color: -line;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-pref-height: 44;
+    -fx-padding: 0 22 0 22;
+    -fx-cursor: hand;
+}
+
+.button-secondary:hover{
+    -fx-background-color: -color10;
+}
+
+/* ===== Starting page (Thanh) ===== */
+.landing {
+    -fx-background-color: white;
+}
+
+.landing-topbar {
+    -fx-padding: 16 48 16 48;
+}
+
+.landing-brand {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -primary-dark;
+}
+
+.landing-hero {
+    -fx-padding: 24 48 24 48;
+}
+
+.landing-tag {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -primary;
+    -fx-background-color: -primary-soft;
+    -fx-background-radius: 999;
+    -fx-padding: 6 12 6 12;
+}
+
+.landing-headline {
+    -fx-font-size: 44px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-black;
+}
+
+.landing-subtitle {
+    -fx-font-size: 17px;
+    -fx-text-fill: -muted;
+}
+
+.landing-note {
+    -fx-font-size: 13px;
+    -fx-text-fill: -muted;
+}
+
+.landing-footer {
+    -fx-padding: 6 12 6 12;
+    -fx-border-color: -line;
+    -fx-border-width: 1 0 0 0;
+}
+
+.landing-footer .hyperlink {
+    -fx-font-size: 13px;
+    -fx-text-fill: -primary;
+}
 .wallets-scroll {
     -fx-background-color: transparent;
     -fx-background: transparent;

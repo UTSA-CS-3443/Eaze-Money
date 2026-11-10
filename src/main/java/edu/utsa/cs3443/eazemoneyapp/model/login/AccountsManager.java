@@ -200,4 +200,32 @@ public class AccountsManager {
         Files.writeString(folder.resolve("budgets.csv"),
                 "budgetId,budgetName,budgetAmount,category,budgetPeriod" + System.lineSeparator());
     }
+
+    /**
+     * Set a new password for an existing account and save ít to accounts.csv
+     * @param username
+     * @param newPassword
+     * @param confirmedPassword
+     * @return null if the password was changed, otherwise an error message to show the user
+     */
+    public String resetPassword(String username, String newPassword, String confirmedPassword){
+        try {
+            InputValidator.checkUsername(username);
+            Account account =  findByUsername(username.trim());
+            if(account == null){
+                return "No account found with this username.";
+            }
+            InputValidator.checkPassword(newPassword, confirmedPassword);
+            String salt = PasswordHasher.generateSalt();
+            account.setSalt(salt);
+
+            account.setPasswordHash(PasswordHasher.hashPassword(newPassword, salt));
+            saveAccounts();
+            return null;
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        } catch (IOException e) {
+            return "Could not save the new password. Please try again.";
+        }
+    }
 }

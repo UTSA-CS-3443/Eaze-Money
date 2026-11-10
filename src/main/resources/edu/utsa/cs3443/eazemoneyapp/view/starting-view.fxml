@@ -1,14 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.StartingController"
-      prefHeight="400.0" prefWidth="600.0" spacing="10.0">
-    <Label fx:id="pageLabel" />
-    <Button text="Login" onAction="#onLogin" />
-    <Button text="Register" onAction="#onRegister" />
-</VBox>
+<BorderPane prefHeight="720.0" prefWidth="1100.0" styleClass="landing" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.StartingController">
+   <top>
+      <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="landing-topbar" BorderPane.alignment="CENTER_LEFT">
+         <children>
+            <ImageView fitHeight="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/logo.png" />
+               </image>
+               <clip>
+                  <!-- rounds the logo corners: width = 32 * 644 / 175 (logo.png ratio) -->
+                  <Rectangle arcHeight="12.0" arcWidth="12.0" height="32.0" width="118.0" />
+               </clip>
+            </ImageView>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <HBox alignment="CENTER_LEFT" spacing="56.0" styleClass="landing-hero" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER_LEFT" maxWidth="520.0" spacing="20.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="landing-tag" text="Free · Works offline · Data stays on your computer" />
+                  <Label styleClass="landing-headline" text="Know where every dollar goes." wrapText="true" />
+                  <Label styleClass="landing-subtitle" text="Track spending across all your wallets, set monthly limits, and see your progress at a glance — all in one window." wrapText="true" />
+                  <HBox alignment="CENTER_LEFT" spacing="12.0">
+                     <children>
+                        <Button fx:id="registerButton" mnemonicParsing="false" onAction="#onRegister" styleClass="button-primary" text="Get started" />
+                        <Button fx:id="logInButton" mnemonicParsing="false" onAction="#onLogin" styleClass="button-secondary" text="Sign in" />
+                     </children>
+                  </HBox>
+                  <Label styleClass="landing-note" text="No bank login needed. Everything is saved as local files you control." wrapText="true" />
+               </children>
+            </VBox>
+            <ImageView fx:id="previewImage" fitWidth="420.0" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/dashboard-preview.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="landing-footer" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="landing-note" text="© 2026 Eaze Money · CS3443 project" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Hyperlink onAction="#onTerms" text="Terms of Service" />
+            <Hyperlink onAction="#onPrivacy" text="Privacy Policy" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
