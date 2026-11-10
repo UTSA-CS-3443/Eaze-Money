@@ -1,6 +1,9 @@
 package edu.utsa.cs3443.eazemoneyapp;
 
 import edu.utsa.cs3443.eazemoneyapp.model.login.Account;
+import edu.utsa.cs3443.eazemoneyapp.model.login.PasswordHasher;
+
+import java.time.LocalDate;
 
 /**
  * Holds the currently logged-in Account for the duration of the program run.
@@ -8,9 +11,25 @@ import edu.utsa.cs3443.eazemoneyapp.model.login.Account;
  */
 public final class Session {
 
-    private static Account currentAccount;
+    // Temporary development account; remove this initializer when login is implemented.
+    private static Account currentAccount = createDevelopmentAccount();
 
     private Session() {}
+
+    private static Account createDevelopmentAccount() {
+        String salt = "development-only-salt";
+        return new Account(
+                "u1001",
+                "jdoe",
+                PasswordHasher.hashPassword("pass1234", salt),
+                salt,
+                "John",
+                "USD",
+                LocalDate.of(2026, 10, 1),
+                true
+        );
+    }
+
     /**
      *
      * Starts a session for the given account.

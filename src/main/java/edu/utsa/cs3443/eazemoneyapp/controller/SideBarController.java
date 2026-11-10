@@ -13,7 +13,6 @@ import edu.utsa.cs3443.eazemoneyapp.util.Page;
  */
 public class SideBarController {
 
-    @FXML private Label userLabel;
     @FXML private Button dashboardButton;
     @FXML private Button transactionsButton;
     @FXML private Button budgetsButton;
@@ -38,14 +37,6 @@ public class SideBarController {
             budgetsButton.getStyleClass().add("active");
         } else if (page == Page.WALLETS) {
             walletsButton.getStyleClass().add("active");
-        }
-    }
-
-    /** Runs once, right after the FXML is loaded (after login, so the account exists). */
-    @FXML
-    private void initialize() {
-        if (Session.isLoggedIn()) {
-            userLabel.setText(Session.getCurrentAccount().getDisplayName());
         }
     }
 
