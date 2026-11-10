@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import edu.utsa.cs3443.eazemoneyapp.Session;
 import edu.utsa.cs3443.eazemoneyapp.model.transactions.Transaction;
 import edu.utsa.cs3443.eazemoneyapp.model.transactions.TransactionList;
+import edu.utsa.cs3443.eazemoneyapp.util.Dialogs;
 import java.io.IOException;
 import javafx.beans.property.SimpleStringProperty;
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public void onShow() {
     String userId = Session.getUserID();
 
     if (userId == null) {
-        System.err.println("No user is logged in.");
+        Dialogs.showError("No user is logged in.");
         return;
     }
 
@@ -92,9 +93,8 @@ public void onShow() {
 
     try {
         transactionList.loadTransactions();
-        System.out.println("Transactions loaded successfully!");
     } catch (IOException e) {
-        System.err.println("Failed to load transactions: " + e.getMessage());
+        Dialogs.showError("Failed to load transactions: " + e.getMessage());
     }
     transactionsTable.getItems().setAll(transactionList.getTransactions());
 }
@@ -136,7 +136,7 @@ public void onShow() {
                             new BigDecimal(amountField.getText())
                     );
                 } catch (Exception e) {
-                    System.err.println("Invalid transaction details: " + e.getMessage());
+                    Dialogs.showError("Invalid transaction details: " + e.getMessage());
                 }
             }
             return null;
@@ -147,9 +147,9 @@ public void onShow() {
                 try {
                     transactionList.saveTransactions();
                     transactionsTable.getItems().setAll(transactionList.getTransactions());
-                    System.out.println("Transaction saved successfully!");
+                    Dialogs.showInfo("Transaction saved successfully!");
                 } catch (IOException e) {
-                    System.err.println("Failed to save transaction: " + e.getMessage());
+                    Dialogs.showError("Failed to save transaction: " + e.getMessage());
                 }
             }
         });
