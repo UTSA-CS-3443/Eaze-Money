@@ -6,7 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.StartingController"
+      fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.OnboardingController"
       prefHeight="400.0" prefWidth="600.0" spacing="10.0">
     <Label fx:id="pageLabel" />
     <Button text="Go to Dashboard" onAction="#onDashboard" />
