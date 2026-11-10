@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.TransactionsController"
-      prefHeight="400.0" prefWidth="600.0">
-    <Label fx:id="pageLabel" />
+      spacing="20"
+      fillWidth="true">
+
+    <padding>
+        <Insets top="25" right="30" bottom="25" left="30"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Transactions"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <Label text="View and manage your financial activity"
+                   style="-fx-text-fill: #888888;"/>
+        </VBox>
+
+        <Button text="+ Add Transaction"
+                fx:id="addTransactionButton"/>
+    </HBox>
+
+    <!-- Transactions table -->
+    <TableView fx:id="transactionsTable"
+               VBox.vgrow="ALWAYS">
+
+        <columns>
+            <TableColumn fx:id="dateColumn"
+                         text="Date"
+                         prefWidth="110"/>
+
+            <TableColumn fx:id="transactionColumn"
+                         text="Transaction"
+                         prefWidth="160"/>
+
+            <TableColumn fx:id="categoryColumn"
+                         text="Category"
+                         prefWidth="120"/>
+
+            <TableColumn fx:id="walletColumn"
+                         text="Wallet"
+                         prefWidth="120"/>
+
+            <TableColumn fx:id="typeColumn"
+                         text="Type"
+                         prefWidth="100"/>
+
+            <TableColumn fx:id="amountColumn"
+                         text="Amount"
+                         prefWidth="120"/>
+        </columns>
+    </TableView>
+
 </VBox>
