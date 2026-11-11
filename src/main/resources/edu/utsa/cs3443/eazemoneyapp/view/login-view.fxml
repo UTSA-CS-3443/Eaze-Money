@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1100.0" styleClass="auth-page" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1100.0" styleClass="auth-page" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.LoginController">
    <children>
       <VBox minWidth="300.0" prefHeight="300.0" prefWidth="380.0" spacing="16.0" styleClass="auth-brand" stylesheets="@../css/style.css">
          <children>
@@ -33,7 +32,7 @@
                   <Hyperlink onAction="#onBack" text="← Back" />
                   <Label styleClass="auth-title" stylesheets="@../css/style.css" text="Sign in" />
                   <Label styleClass="auth-subtitle" stylesheets="@../css/style.css" text="Use the username and password you registered with" wrapText="true" />
-                  <Label fx:id="errorLabel" styleClass="auth-error" stylesheets="@../css/style.css" text="Label" visible="false" wrapText="true" />
+                  <Label fx:id="errorLabel" styleClass="auth-error" stylesheets="@../css/style.css" visible="false" wrapText="true" />
                   <Label styleClass="auth-label" stylesheets="@../css/style.css" text="Username" />
                   <TextField fx:id="usernameField" promptText="e.g jdoe" />
                   <Label styleClass="auth-label" stylesheets="@../css/style.css" text="Password" />
@@ -43,7 +42,7 @@
                         <Hyperlink onAction="#onForgotPassword" text="Forgot Password?" />
                      </children>
                   </HBox>
-                  <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="button-primary" stylesheets="@../css/style.css" text="Sign in" />
+                  <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSignIn" styleClass="button-primary" stylesheets="@../css/style.css" text="Sign in" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="4.0">
                      <children>
                         <Label text="New here?" />
