@@ -1,6 +1,7 @@
 package edu.utsa.cs3443.eazemoneyapp.model.budgets;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Locale;
 
 /**
@@ -42,6 +43,69 @@ public class Budget {
             }
         }
         return false;
+    }
+
+    /**
+     * Checks the text a user typed for a budget name.
+     * @return the trimmed name
+     * @throws IllegalArgumentException with a message that can be shown to the user
+     */
+    public static String validateName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Budget name is required.");
+        }
+        String trimmed = name.trim();
+        if (trimmed.length() > 50) {
+            throw new IllegalArgumentException("Budget name must be 50 characters or fewer.");
+        }
+        return trimmed;
+    }
+
+    /**
+     * Checks the text a user typed for a category.
+     * @return the category in upper case (see normalize)
+     * @throws IllegalArgumentException with a message that can be shown to the user
+     */
+    public static String validateCategory(String category) {
+        if (category == null || category.isBlank()) {
+            throw new IllegalArgumentException("Category is required.");
+        }
+        if (category.contains(",") || category.contains("\"")) {
+            throw new IllegalArgumentException("Category cannot contain commas or quotes.");
+        }
+        return normalize(category);
+    }
+
+    /**
+     * Turns the text a user typed (e.g. "250", "$1,200.5") into an amount with 2 decimals.
+     * @throws IllegalArgumentException if it is not a number greater than 0
+     */
+    public static BigDecimal parseAmount(String amountText) {
+        if (amountText == null || amountText.isBlank()) {
+            throw new IllegalArgumentException("Amount is required.");
+        }
+        BigDecimal amount;
+        try {
+            amount = new BigDecimal(amountText.trim().replace("$", "").replace(",", ""));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Amount must be a number, e.g. 250.00");
+        }
+        if (amount.signum() <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0.");
+        }
+        return amount.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * Checks a period chosen by the user.
+     * @return the period in upper case
+     * @throws IllegalArgumentException if it is not WEEKLY, MONTHLY or YEARLY
+     */
+    public static String validatePeriod(String period) {
+        if (!isValidPeriod(period)) {
+            throw new IllegalArgumentException("Please choose a period (Weekly, Monthly or Yearly).");
+        }
+        return normalize(period);
     }
 
     public String getBudgetId() {
