@@ -15,11 +15,11 @@ public enum Page {
     REGISTER("/edu/utsa/cs3443/eazemoneyapp/view/register-view.fxml", false),
     ONBOARDING("/edu/utsa/cs3443/eazemoneyapp/view/onboarding-view.fxml", false),
     FORGOT_PASSWORD("/edu/utsa/cs3443/eazemoneyapp/view/forgot-password-view.fxml", false),
+    BUDGETS("/edu/utsa/cs3443/eazemoneyapp/view/budgets-view.fxml", false),
 
     // Pages shown to the right of the sidebar
     DASHBOARD("/edu/utsa/cs3443/eazemoneyapp/view/dashboard-view.fxml", true),
     TRANSACTIONS("/edu/utsa/cs3443/eazemoneyapp/view/transactions-view.fxml", true),
-    BUDGETS("/edu/utsa/cs3443/eazemoneyapp/view/budgets-view.fxml", true),
     WALLETS("/edu/utsa/cs3443/eazemoneyapp/view/wallets-view.fxml", true);
 
     private final String fxmlPath;
