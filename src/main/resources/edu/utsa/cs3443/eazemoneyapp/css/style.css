@@ -210,8 +210,31 @@
 }
 
 .dashboard-middle {
-    -fx-background-color: -color4;
+    -fx-background-color: -color-white;
     -fx-background-radius: 12px;
+    -fx-padding: 12px;
+}
+
+.dashboard-middle .default-color0.chart-bar {
+    -fx-bar-fill: #2ecc71;
+    -fx-scale-x: 0.5;
+}
+
+.dashboard-middle .default-color1.chart-bar {
+    -fx-bar-fill: #e74c3c;
+    -fx-scale-x: 0.5;
+}
+
+.dashboard-middle .chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.dashboard-middle .default-color0.chart-legend-item-symbol {
+    -fx-background-color: #2ecc71;
+}
+
+.dashboard-middle .default-color1.chart-legend-item-symbol {
+    -fx-background-color: #e74c3c;
 }
 
 .dashboard-bottom {
