@@ -12,6 +12,7 @@
     -color-black: #212121;
     -color-white: #E2E2E2;
 
+
     /* Role names: what each color is used for */
     -primary: -color3;          /* primary buttons, links, active items */
     -primary-hover: -color4;    /* primary button on hover */
@@ -292,9 +293,68 @@
     -fx-border-width: 2;
 }
 
-.auth-form . hyperlink {
+.auth-form .hyperlink {
     -fx-text-fill: -primary;
     -fx-font-weight: bold;
     -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+/* ===== Onboarding page (Thanh) ===== */
+.onboarding-page {
+    -fx-background-color: -bg;
+}
+
+.onboarding-welcome {
+    -fx-font-size: 14px;
+    -fx-text-fill: -muted;
+    -fx-font-weight: semi-bold;
+}
+
+.onboarding-card{
+    -fx-background-color: -bg;
+    -fx-background-radius: 16;
+    -fx-border-color:  -line;
+    -fx-border-radius: 16;
+    -fx-padding: 32;
+}
+
+.wallet-row{
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-border-color: -line;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-padding: 14 16;
+}
+
+.wallet-name, .wallet-amount {
+    -fx-font-size: 15px;
+    -fx-text-fill: -color-black;
+}
+
+.wallet-empty {
+    -fx-text-fill: -muted;
+    -fx-alignment: center;
+    -fx-max-width:  infinity;
+    -fx-border-color: -line;
+    -fx-border-radius: 8;
+    -fx-border-style: dashed;
+}
+
+.money-field {
+    -fx-background-color: -white;
+    -fx-border-color:  -line;
+    -fx-border-radius: 8;
+    -fx-padding: 0 14;
+    -fx-pref-height: 46;
+}
+
+.money-prefix {
+    -fx-text-fill: -muted;
+}
+
+.money-input {
+    -fx-background-color: transparent;
     -fx-padding: 0;
 }
