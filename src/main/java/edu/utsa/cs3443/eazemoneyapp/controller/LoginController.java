@@ -65,8 +65,10 @@ public class LoginController extends BaseController {
 
     @Override
     public void onShow() {
+        Session.logout();
         usernameField.clear();
         passwordField.clear();
         hideFormError();
+
     }
 }
