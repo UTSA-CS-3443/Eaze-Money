@@ -228,4 +228,19 @@ public class AccountsManager {
             return "Could not save the new password. Please try again.";
         }
     }
+
+    /**
+     * Marks an account as having finished onboarding and saves accounts.csv.
+     * @param userId the id of the signed-in account
+     * @throws IOException if accounts.csv cannot be written
+     */
+    public void completeOnboarding(String userId) throws IOException {
+        for (Account a : accounts) {
+            if(a.getUserID().equals(userId)){
+                a.setOnboardingComplete(true);
+                saveAccounts();
+                return;
+            }
+        }
+    }
 }
