@@ -1,5 +1,6 @@
 package edu.utsa.cs3443.eazemoneyapp.controller;
 
+import edu.utsa.cs3443.eazemoneyapp.Session;
 import edu.utsa.cs3443.eazemoneyapp.util.Navigator;
 import edu.utsa.cs3443.eazemoneyapp.util.Page;
 import javafx.fxml.FXML;
@@ -25,6 +26,6 @@ public class StartingController extends BaseController {
     }
     @Override
     public void onShow() {
-
+        Session.logout();
     }
 }
