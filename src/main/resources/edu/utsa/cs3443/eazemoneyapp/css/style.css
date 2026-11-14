@@ -4,7 +4,7 @@
     -color3: #377A6D;
     -color4: #296A6D;
     -color5: #295966;
-    -color6: #2F4858;
+    -color6: #0A4542;
     -color7: #E3EFE9;
     -color8: #6B7380;
     -color9: #DEE0E6;
@@ -217,4 +217,84 @@
 .dashboard-bottom {
     -fx-background-color: -color5;
     -fx-background-radius: 12px;
+}
+
+/* ===== Auth page (Thanh) ===== */
+.auth-page {
+    -fx-background-color: white;
+}
+
+.auth-brand {
+    -fx-background-color:-primary-dark;
+    -fx-padding: 48 56 48 56;
+}
+
+.auth-brand-title {
+    -fx-text-fill: white;
+    -fx-font-size: 34px;
+    -fx-font-weight: bold;
+}
+
+.auth-brand-text {
+    -fx-text-fill: -primary-soft;
+    -fx-font-size: 16px;
+}
+
+.auth-form {
+    -fx-padding: 24;
+}
+
+.auth-title {
+    -fx-text-fill: -ink;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.auth-subtitle {
+    -fx-text-fill: -muted;
+    -fx-font-size: 15px;
+}
+
+.auth-label {
+    -fx-text-fill: -ink;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.auth-hint {
+    -fx-text-fill: -muted;
+    -fx-font-size: 13px;
+}
+
+.auth-error {
+    -fx-background-color: -error-soft;
+    -fx-border-color: -error;
+    -fx-border-radius: 8;
+    -fx-text-fill: -error;
+    -fx-font-size: 14px;
+    -fx-padding: 12 14 12 14;
+    -fx-max-width: infinity;
+}
+.auth-form .text-field,
+.auth-form .password-field {
+    -fx-pref-height: 46;
+    -fx-background-color: white;
+    -fx-border-color: -line;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 0 14 0 14;
+    -fx-font-size:  15px;
+}
+
+.auth-form .text-field:focused,
+.auth-form .password-field:focused{
+    -fx-border-color: -primary;
+    -fx-border-width: 2;
+}
+
+.auth-form . hyperlink {
+    -fx-text-fill: -primary;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
 }

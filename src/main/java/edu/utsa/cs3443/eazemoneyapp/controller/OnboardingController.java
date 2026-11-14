@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 
 public class OnboardingController extends BaseController {
     @FXML private Label pageLabel;
+    @FXML private Label titleLabel;
+    @FXML private Label contentLabel;
 
     @FXML
     private void initialize() {

@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.OnboardingController"
-      prefHeight="400.0" prefWidth="600.0" spacing="10.0">
-    <Label fx:id="pageLabel" />
-    <Button text="Go to Dashboard" onAction="#onDashboard" />
-</VBox>
+
+<BorderPane prefHeight="720.0" prefWidth="1100.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.OnboardingController">
+   <center>
+      <VBox alignment="CENTER" spacing="16.0" styleClass="onboarding-card" stylesheets="@../css/style.css">
+         <children>
+            <VBox maxWidth="586.0" spacing="16.0" styleClass="onboarding-card">
+               <children>
+                  <Label styleClass="auth-title" text="Add your first wallet" />
+                  <Label styleClass="auth-subtitle" text="A wallet is where your money lives: cash, a bank account, a card." wrapText="true" />
+                  <Label fx:id="walletCountLabel" styleClass="auth-label" text="Wallets added" />
+                  <VBox fx:id="walletRows" prefHeight="200.0" prefWidth="100.0" />
+                  <Label styleClass="auth-label" text="Wallet name" />
+                  <TextField fx:id="walletNameField" promptText="e.g. Checking" />
+                  <Label styleClass="auth-label" text="Starting balance ($)" />
+                  <TextField fx:id="balanceField" onAction="#onAddWallet" promptText="0.00" />
+                  <Label fx:id="errorLabel" styleClass="auth-error" text="Label" visible="false" wrapText="true" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddWallet" styleClass="button-secondary" text="+ Add wallet" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onContinue" styleClass="button-primary" text="Continue to Dashboard" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+         </padding>
+      </VBox>
+   </center>
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="landing-topbar" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="32.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/logo.png" />
+               </image>
+            </ImageView>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="welcomeLabel" text="Welcome" />
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
