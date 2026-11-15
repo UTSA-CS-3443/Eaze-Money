@@ -296,6 +296,7 @@
 }
 
 .auth-error {
+    -fx-min-height: -fx-pref-height;
     -fx-background-color: -error-soft;
     -fx-border-color: -error;
     -fx-border-radius: 8;
