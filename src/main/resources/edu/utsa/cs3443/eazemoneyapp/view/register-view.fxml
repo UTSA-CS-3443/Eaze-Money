@@ -1,13 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.RegisterController"
-      prefHeight="400.0" prefWidth="600.0" spacing="10.0">
-    <Label fx:id="pageLabel" />
-    <Button text="Continue to Onboarding" onAction="#onOnboarding" />
-</VBox>
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1100.0" styleClass="auth-page" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.RegisterController">
+    <children>
+        <VBox alignment="CENTER" minWidth="300.0" prefHeight="300.0" prefWidth="380.0" spacing="16.0" styleClass="auth-brand" stylesheets="@../css/style.css">
+            <children>
+                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                    <image>
+                        <Image url="@../images/logo.png" />
+                    </image>
+                </ImageView>
+                <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                <Label alignment="CENTER" styleClass="auth-brand-title" stylesheets="@../css/style.css" text="Start tracking in two minutes " wrapText="true" />
+                <Label styleClass="auth-brand-text" stylesheets="@../css/style.css" text="One account per installation. Everything you enter stays in a local file on this computer." wrapText="true" />
+            </children>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="14.0" styleClass="auth-form" stylesheets="@../css/style.css" HBox.hgrow="ALWAYS">
+            <children>
+                <VBox maxWidth="400.0" spacing="10.0" styleClass="auth-form" stylesheets="@../css/style.css">
+                    <children>
+                        <Label styleClass="auth-title" stylesheets="@../css/style.css" text="Create your account" />
+                  <Label layoutX="34.0" layoutY="34.0" styleClass="auth-subtitle" stylesheets="@../css/style.css" text="It only takes a minute." />
+                        <Label fx:id="errorLabel" minHeight="-Infinity" styleClass="auth-error" stylesheets="@../css/style.css" visible="false" wrapText="true" managed = "false" />
+                  <Label layoutX="34.0" layoutY="153.0" styleClass="auth-label" stylesheets="@../css/style.css" text="Display Name" />
+                  <TextField fx:id="displayNameField" layoutX="34.0" layoutY="209.0" promptText="e.g jdoe" />
+                        <Label styleClass="auth-label" stylesheets="@../css/style.css" text="Username" />
+                        <TextField fx:id="usernameField" promptText="e.g jdoe" />
+                        <Label styleClass="auth-label" stylesheets="@../css/style.css" text="Password" />
+                        <PasswordField fx:id="passwordField" />
+                  <Label styleClass="auth-hint" stylesheets="@../css/style.css" text="At least 8 characters, letters and numbers, no spaces" />
+                  <Label styleClass="auth-label" text="Confirm password" />
+                  <PasswordField fx:id="confirmPasswordField" layoutX="34.0" layoutY="216.0" onAction="#onRegister" />
+                  <CheckBox fx:id="agreeBox" mnemonicParsing="false" text="I agree to the Terms of Service and Privacy Policy" />
+                        <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRegister" styleClass="button-primary" stylesheets="@../css/style.css" text="Create Account" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="4.0">
+                            <children>
+                                <Label text="Already have an account?" />
+                                <Hyperlink onAction="#onSignIn" text="Sign in" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>
