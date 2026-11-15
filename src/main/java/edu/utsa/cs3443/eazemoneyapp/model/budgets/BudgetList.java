@@ -116,6 +116,41 @@ public class BudgetList {
         return true;
     }
 
+    /**
+     * Validates what the user typed, adds the budget with the next free id and saves
+     * budgets.csv. If saving fails the budget is removed again, so the list and the file
+     * stay the same.
+     *
+     * @return the budget that was added
+     * @throws IllegalArgumentException if any input is invalid or the category already
+     *         has a budget (the message can be shown to the user)
+     * @throws IOException if budgets.csv could not be written
+     */
+    public Budget addBudget(String name, String category, String amountText, String period)
+            throws IOException {
+        String validName = Budget.validateName(name);
+        String validCategory = Budget.validateCategory(category);
+        BigDecimal amount = Budget.parseAmount(amountText);
+        String validPeriod = Budget.validatePeriod(period);
+
+        if (categoryAlreadyBudgeted(validCategory)) {
+            throw new IllegalArgumentException("You already have a budget for " + validCategory + ".");
+        }
+
+        Budget budget = new Budget(null, validName, amount, validPeriod, validCategory);
+        if (!create(budget)) {
+            throw new IllegalArgumentException("This budget could not be added.");
+        }
+
+        try {
+            save();
+        } catch (IOException e) {
+            delete(budget.getBudgetId());
+            throw e;
+        }
+        return budget;
+    }
+
     /** @return a copy of all budgets. */
     public ArrayList<Budget> getBudgets() {
         return new ArrayList<>(budgets);
