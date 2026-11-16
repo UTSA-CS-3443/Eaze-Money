@@ -215,7 +215,11 @@ public class AccountsManager {
             if(account == null){
                 return "No account found with this username.";
             }
+
             InputValidator.checkPassword(newPassword, confirmedPassword);
+            if(PasswordHasher.verifyPassword(newPassword, account.getSalt(), account.getPasswordHash())){
+                return "New password must be different from the current password.";
+            }
             String salt = PasswordHasher.generateSalt();
             account.setSalt(salt);
 
