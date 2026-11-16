@@ -23,6 +23,12 @@ public class TransactionsController extends BaseController {
     private Button addTransactionButton;
 
     @FXML
+    private Button editTransactionButton;
+
+    @FXML
+    private Button deleteTransactionButton;
+
+    @FXML
     private TableView<Object> transactionsTable;
 
     @FXML
@@ -37,8 +43,6 @@ public class TransactionsController extends BaseController {
     @FXML
     private TableColumn<Object, String> walletColumn;
 
-    @FXML
-    private TableColumn<Object, String> typeColumn;
 
     @FXML
     private TableColumn<Object, String> amountColumn;
@@ -48,6 +52,7 @@ public class TransactionsController extends BaseController {
     // Table data and button functionality will be added next.
     @FXML
     private void initialize() {
+        transactionsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         dateColumn.setCellValueFactory(data ->
                 new SimpleStringProperty(
                         ((Transaction) data.getValue()).getDate().toString()
@@ -77,15 +82,51 @@ public class TransactionsController extends BaseController {
                         ((Transaction) data.getValue()).getAmount().toString()
                 )
         );
-        addTransactionButton.setOnAction(event -> showAddTransactionDialog());
+        addTransactionButton.setOnAction(event -> showTransactionDialog(null));
+        editTransactionButton.setOnAction(event -> editSelectedTransaction());
+        deleteTransactionButton.setOnAction(event -> deleteSelectedTransaction());
     }
+
+
+    private void editSelectedTransaction() {
+        Transaction selected = (Transaction) transactionsTable
+                .getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            Dialogs.showError("Please select a transaction to edit.");
+            return;
+        }
+
+        showTransactionDialog(selected);
+    }
+
+    private void deleteSelectedTransaction() {
+        Transaction selected = (Transaction) transactionsTable
+                .getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            Dialogs.showError("Please select a transaction to delete.");
+            return;
+        }
+
+        if (transactionList.deleteTransaction(selected.getTransactionId())) {
+            try {
+                transactionList.saveTransactions();
+                transactionsTable.getItems().remove(selected);
+                Dialogs.showInfo("Transaction deleted successfully!");
+            } catch (IOException e) {
+                Dialogs.showError("Failed to save changes: " + e.getMessage());
+            }
+        }
+    }
+
         // Refresh transactions when this page is displayed
 @Override
 public void onShow() {
     String userId = Session.getUserID();
 
     if (userId == null) {
-        Dialogs.showError("No user is logged in.");
+        Dialogs.showError("Please log in to manage transactions.");
         return;
     }
 
@@ -98,10 +139,10 @@ public void onShow() {
     }
     transactionsTable.getItems().setAll(transactionList.getTransactions());
 }
-    private void showAddTransactionDialog() {
+    private void showTransactionDialog(Transaction existing) {
         Dialog<Transaction> dialog = new Dialog<>();
-        dialog.setTitle("Add Transaction");
-        dialog.setHeaderText("Enter transaction details");
+        dialog.setTitle(existing == null ? "Add Transaction" : "Edit Transaction");
+        dialog.setHeaderText(existing == null ? "Enter transaction details" : "Edit transaction details");
 
         ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(saveButton, ButtonType.CANCEL);
@@ -111,6 +152,14 @@ public void onShow() {
         TextField categoryField = new TextField();
         TextField walletField = new TextField();
         TextField amountField = new TextField();
+
+        if (existing != null) {
+            datePicker.setValue(existing.getDate());
+            noteField.setText(existing.getNote());
+            categoryField.setText(existing.getCategory());
+            walletField.setText(existing.getWalletId());
+            amountField.setText(existing.getAmount().toString());
+        }
 
         javafx.scene.layout.GridPane grid = new javafx.scene.layout.GridPane();
         grid.setHgap(10);
@@ -128,7 +177,7 @@ public void onShow() {
             if (button == saveButton) {
                 try {
                     return new Transaction(
-                            UUID.randomUUID().toString(),
+                            existing == null ? UUID.randomUUID().toString() : existing.getTransactionId(),
                             datePicker.getValue(),
                             noteField.getText(),
                             categoryField.getText(),
@@ -143,11 +192,16 @@ public void onShow() {
         });
 
         dialog.showAndWait().ifPresent(transaction -> {
-            if (transactionList != null && transactionList.addTransaction(transaction)) {
+            if (transactionList != null &&
+                    (existing == null
+                            ? transactionList.addTransaction(transaction)
+                            : transactionList.updateTransaction(existing.getTransactionId(), transaction))) {
                 try {
                     transactionList.saveTransactions();
                     transactionsTable.getItems().setAll(transactionList.getTransactions());
-                    Dialogs.showInfo("Transaction saved successfully!");
+                    Dialogs.showInfo(existing == null
+                            ? "Transaction added successfully!"
+                            : "Transaction updated successfully!");
                 } catch (IOException e) {
                     Dialogs.showError("Failed to save transaction: " + e.getMessage());
                 }

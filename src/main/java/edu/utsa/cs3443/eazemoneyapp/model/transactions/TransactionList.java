@@ -89,7 +89,7 @@ public class TransactionList {
         return true;
     }
 
-    // DELETE: Remove a transaction using its ID
+    //: Remove a transaction using its ID
     public boolean deleteTransaction(String transactionId) {
         Transaction transaction = findTransactionById(transactionId);
         return transaction != null && transactions.remove(transaction);
@@ -152,7 +152,7 @@ public class TransactionList {
         for (String line : Files.readAllLines(filePath)) {
 
             // Skip the header and empty lines
-            if (line.startsWith("transactionId,") || line.isBlank()) {
+            if (line.startsWith("transactionId,") || line.trim().isEmpty()){
                 continue;
             }
 
