@@ -11,24 +11,9 @@ import java.time.LocalDate;
  */
 public final class Session {
 
-    // Temporary development account; remove this initializer when login is implemented.
-    private static Account currentAccount = createDevelopmentAccount();
+    private static Account currentAccount;
 
     private Session() {}
-
-    private static Account createDevelopmentAccount() {
-        String salt = "development-only-salt";
-        return new Account(
-                "u1001",
-                "jdoe",
-                PasswordHasher.hashPassword("pass1234", salt),
-                salt,
-                "John",
-                "USD",
-                LocalDate.of(2026, 10, 1),
-                true
-        );
-    }
 
     /**
      *
