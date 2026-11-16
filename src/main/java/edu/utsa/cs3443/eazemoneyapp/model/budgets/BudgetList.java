@@ -7,6 +7,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -210,13 +212,22 @@ public class BudgetList {
 
     // ------------------------------------------------------------------ spending
 
-    /**
-     * Total spent in the budget's category: reads transactions.csv directly and adds up the
-     * expenses (negative amounts) whose category matches. Income/refunds (positive amounts)
-     * are not counted. Returns 0 if the user has no transactions file.
-     */
+    /** Spent in the budget's category during the current period (this week, month or year). */
     public BigDecimal getSpent(Budget b) throws IOException {
+        return getSpent(b, LocalDate.now());
+    }
+
+    /**
+     * Total spent in the budget's category during the period that contains {@code date}
+     * (e.g. for a MONTHLY budget and 2026-11-15: from 2026-11-01 to 2026-11-30).
+     * Reads transactions.csv directly and adds up the expenses (negative amounts) whose
+     * category matches. Income/refunds (positive amounts) are not counted.
+     * Returns 0 if the user has no transactions file.
+     */
+    public BigDecimal getSpent(Budget b, LocalDate date) throws IOException {
         BigDecimal spent = BigDecimal.ZERO;
+        LocalDate start = b.getPeriodStart(date);
+        LocalDate end = b.getPeriodEnd(date);
 
         if (!Files.exists(transactionsFile)) {
             return spent;
@@ -230,10 +241,11 @@ public class BudgetList {
 
             // Locate columns by name so a reordered file still works.
             String[] columns = parseCsvLine(header);
+            int dateCol = indexOf(columns, "date");
             int categoryCol = indexOf(columns, "category");
             int amountCol = indexOf(columns, "amount");
-            if (categoryCol < 0 || amountCol < 0) {
-                throw new IOException("transactions.csv is missing a category or amount column");
+            if (dateCol < 0 || categoryCol < 0 || amountCol < 0) {
+                throw new IOException("transactions.csv is missing a date, category or amount column");
             }
 
             String line;
@@ -243,11 +255,21 @@ public class BudgetList {
                 }
 
                 String[] data = parseCsvLine(line);
-                if (data.length <= Math.max(categoryCol, amountCol)) {
+                if (data.length <= Math.max(dateCol, Math.max(categoryCol, amountCol))) {
                     throw new IOException("Invalid transaction row: " + line);
                 }
 
                 if (!Budget.normalize(data[categoryCol]).equals(b.getCategory())) {
+                    continue;
+                }
+
+                LocalDate when;
+                try {
+                    when = LocalDate.parse(data[dateCol].trim());
+                } catch (DateTimeParseException e) {
+                    throw new IOException("Invalid date in transaction row: " + line);
+                }
+                if (when.isBefore(start) || when.isAfter(end)) {
                     continue;
                 }
 
@@ -259,6 +281,11 @@ public class BudgetList {
         }
 
         return spent;
+    }
+
+    /** Budget amount minus what has been spent (negative when the budget is exceeded). */
+    public BigDecimal getRemaining(Budget b) throws IOException {
+        return b.getBudgetAmount().subtract(getSpent(b));
     }
 
     /** True if spending in the budget's category is greater than the budget amount. */
