@@ -2,6 +2,9 @@ package edu.utsa.cs3443.eazemoneyapp.model.budgets;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
 
 /**
@@ -106,6 +109,33 @@ public class Budget {
             throw new IllegalArgumentException("Please choose a period (Weekly, Monthly or Yearly).");
         }
         return normalize(period);
+    }
+
+    /**
+     * First day of the budget period that contains the given date:
+     * Monday of that week, the 1st of that month, or January 1st of that year.
+     */
+    public LocalDate getPeriodStart(LocalDate date) {
+        switch (budgetPeriod) {
+            case "WEEKLY":
+                return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+            case "YEARLY":
+                return date.withDayOfYear(1);
+            default: // MONTHLY
+                return date.withDayOfMonth(1);
+        }
+    }
+
+    /** Last day of the budget period that contains the given date. */
+    public LocalDate getPeriodEnd(LocalDate date) {
+        switch (budgetPeriod) {
+            case "WEEKLY":
+                return date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+            case "YEARLY":
+                return date.with(TemporalAdjusters.lastDayOfYear());
+            default: // MONTHLY
+                return date.with(TemporalAdjusters.lastDayOfMonth());
+        }
     }
 
     public String getBudgetId() {

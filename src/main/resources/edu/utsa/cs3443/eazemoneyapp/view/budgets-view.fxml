@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -11,32 +13,56 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.BudgetsController"
-      alignment="CENTER" spacing="10.0"
-      prefHeight="400.0" prefWidth="600.0">
+      spacing="20" fillWidth="true">
     <padding>
-        <Insets top="40.0" right="40.0" bottom="40.0" left="40.0" />
+        <Insets top="25" right="30" bottom="25" left="30" />
     </padding>
 
-    <VBox spacing="10.0" maxWidth="360.0">
-        <Label text="Add Budget" styleClass="page-title" />
+    <!-- Header -->
+    <VBox spacing="5">
+        <Label text="Budgets" styleClass="page-title" />
+        <Label text="Spending is counted for the current week, month or year of each budget" style="-fx-text-fill: #888888;" />
+    </VBox>
 
-        <Label text="Budget name" />
-        <TextField fx:id="nameField" promptText="e.g. Groceries Budget" />
+    <!-- Current budgets -->
+    <TableView fx:id="budgetsTable" VBox.vgrow="ALWAYS">
+        <placeholder>
+            <Label text="No budgets yet. Add one below." />
+        </placeholder>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Budget" prefWidth="160" />
+            <TableColumn fx:id="categoryColumn" text="Category" prefWidth="120" />
+            <TableColumn fx:id="periodColumn" text="Period" prefWidth="90" />
+            <TableColumn fx:id="amountColumn" text="Amount" prefWidth="90" />
+            <TableColumn fx:id="spentColumn" text="Spent" prefWidth="90" />
+            <TableColumn fx:id="remainingColumn" text="Remaining" prefWidth="100" />
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+        </columns>
+    </TableView>
 
-        <Label text="Category" />
-        <TextField fx:id="categoryField" promptText="e.g. GROCERIES" />
-
-        <Label text="Amount" />
-        <TextField fx:id="amountField" promptText="e.g. 250.00" />
-
-        <Label text="Period" />
-        <ComboBox fx:id="periodBox" maxWidth="Infinity" />
-
-        <HBox spacing="10.0" alignment="CENTER_RIGHT">
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-            <Button text="Back to Dashboard" styleClass="button-secondary" onAction="#onBack" cancelButton="true" />
+    <!-- Add a budget -->
+    <VBox spacing="10">
+        <Label text="Add a Budget" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+        <HBox spacing="10" alignment="BOTTOM_LEFT">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Budget name" />
+                <TextField fx:id="nameField" promptText="e.g. Groceries Budget" />
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Category" />
+                <TextField fx:id="categoryField" promptText="e.g. GROCERIES" />
+            </VBox>
+            <VBox spacing="4">
+                <Label text="Amount" />
+                <TextField fx:id="amountField" promptText="e.g. 250.00" prefWidth="110" />
+            </VBox>
+            <VBox spacing="4">
+                <Label text="Period" />
+                <ComboBox fx:id="periodBox" prefWidth="120" />
+            </VBox>
             <Button text="Save Budget" styleClass="button-primary" onAction="#onSave" defaultButton="true" />
         </HBox>
     </VBox>
