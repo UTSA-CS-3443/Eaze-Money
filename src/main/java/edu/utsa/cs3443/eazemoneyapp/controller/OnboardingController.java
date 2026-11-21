@@ -8,7 +8,6 @@ import edu.utsa.cs3443.eazemoneyapp.util.Navigator;
 import edu.utsa.cs3443.eazemoneyapp.util.Page;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -56,7 +55,12 @@ public class OnboardingController extends BaseController {
             return;
         }
 
-        wallets.addWallet(new Wallet(wallets.nextWalletId(), walletName, balance));
+        try {
+            wallets.addWallet(new Wallet(wallets.nextWalletId(), walletName, balance));
+        } catch (IOException e) {
+            showFormError("Could not save wallet: " + e.getMessage());
+            return;
+        }
 
         refreshList();
         walletNameField.clear();
