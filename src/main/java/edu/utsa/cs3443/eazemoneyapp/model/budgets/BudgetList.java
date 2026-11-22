@@ -153,6 +153,70 @@ public class BudgetList {
         return budget;
     }
 
+    /**
+     * Validates what the user typed and replaces the budget with this id, then saves
+     * budgets.csv. The id stays the same. If saving fails the old budget is put back.
+     *
+     * @return the updated budget
+     * @throws IllegalArgumentException if any input is invalid, the budget doesn't exist,
+     *         or the new category already belongs to another budget
+     * @throws IOException if budgets.csv could not be written
+     */
+    public Budget updateBudget(String budgetId, String name, String category, String amountText,
+                               String period) throws IOException {
+        Budget existing = findById(budgetId);
+        if (existing == null) {
+            throw new IllegalArgumentException("That budget no longer exists.");
+        }
+
+        String validName = Budget.validateName(name);
+        String validCategory = Budget.validateCategory(category);
+        BigDecimal amount = Budget.parseAmount(amountText);
+        String validPeriod = Budget.validatePeriod(period);
+
+        Budget sameCategory = findByCategory(validCategory);
+        if (sameCategory != null && sameCategory != existing) {
+            throw new IllegalArgumentException("You already have a budget for " + validCategory + ".");
+        }
+
+        Budget updated = new Budget(existing.getBudgetId(), validName, amount, validPeriod, validCategory);
+        if (!update(existing.getBudgetId(), updated)) {
+            throw new IllegalArgumentException("This budget could not be updated.");
+        }
+
+        try {
+            save();
+        } catch (IOException e) {
+            update(existing.getBudgetId(), existing);
+            throw e;
+        }
+        return updated;
+    }
+
+    /**
+     * Removes the budget with this id and saves budgets.csv. If saving fails the budget
+     * is put back in its original position.
+     *
+     * @throws IllegalArgumentException if the budget doesn't exist
+     * @throws IOException if budgets.csv could not be written
+     */
+    public void deleteBudget(String budgetId) throws IOException {
+        Budget existing = findById(budgetId);
+        if (existing == null) {
+            throw new IllegalArgumentException("That budget no longer exists.");
+        }
+
+        int index = budgets.indexOf(existing);
+        budgets.remove(index);
+
+        try {
+            save();
+        } catch (IOException e) {
+            budgets.add(index, existing);
+            throw e;
+        }
+    }
+
     /** @return a copy of all budgets. */
     public ArrayList<Budget> getBudgets() {
         return new ArrayList<>(budgets);
