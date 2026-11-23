@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.StackedBarChart?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
@@ -31,11 +31,11 @@
         </HBox>
     </VBox>
     <VBox minHeight="300" VBox.vgrow="ALWAYS" styleClass="dashboard-middle">
-        <StackedBarChart fx:id="incomeExpenseChart" VBox.vgrow="ALWAYS" minHeight="300"
-                         animated="false" legendSide="BOTTOM">
+        <BarChart fx:id="incomeExpenseChart" VBox.vgrow="ALWAYS" minHeight="300"
+                  animated="false" legendSide="BOTTOM">
             <xAxis><CategoryAxis fx:id="monthAxis" label="Month"/></xAxis>
             <yAxis><NumberAxis fx:id="amountAxis" label="Amount"/></yAxis>
-        </StackedBarChart>
+        </BarChart>
     </VBox>
     <Region minHeight="10" VBox.vgrow="ALWAYS" styleClass="dashboard-bottom"/>
 </VBox>

@@ -4,6 +4,7 @@ import edu.utsa.cs3443.eazemoneyapp.model.transactions.Transaction;
 import edu.utsa.cs3443.eazemoneyapp.model.transactions.TransactionList;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +28,15 @@ public class WalletList {
 
     /** Reads data/{userId}/wallets.csv. A missing file simply gives an empty list. */
     public void loadWallets(String userId) {
+        try {
+            reloadWallets(userId);
+        } catch (IOException e) {
+            System.out.println("Could not read wallets file: " + e.getMessage());
+        }
+    }
+
+    /** Reloads the user's wallets and reports file or malformed-row errors to the caller. */
+    public void reloadWallets(String userId) throws IOException {
         setUserId(userId);
         wallets.clear();
 
@@ -34,21 +44,17 @@ public class WalletList {
         if (!Files.exists(file)) {
             return;
         }
-        try {
-            List<String> lines = Files.readAllLines(file);
-            for (int i = 1; i < lines.size(); i++) {          // line 0 is the header
-                String line = lines.get(i).trim();
-                if (line.isEmpty()) {
-                    continue;
-                }
-                try {
-                    wallets.add(convertLineToWallet(line));
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Skipping bad wallet row: " + e.getMessage());
-                }
+        List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);
+        for (int i = 1; i < lines.size(); i++) {
+            String line = lines.get(i).trim();
+            if (line.isEmpty()) {
+                continue;
             }
-        } catch (IOException e) {
-            System.out.println("Could not read wallets file: " + e.getMessage());
+            try {
+                wallets.add(convertLineToWallet(line));
+            } catch (IllegalArgumentException e) {
+                throw new IOException("Invalid wallet row: " + line, e);
+            }
         }
     }
 
@@ -75,7 +81,7 @@ public class WalletList {
 
     /** Loads a user's wallets and returns their balances after applying transactions. */
     public Map<String, BigDecimal> loadWalletBalances(String userId) throws IOException {
-        loadWallets(userId);
+        reloadWallets(userId);
 
         Map<String, BigDecimal> balances = new LinkedHashMap<>();
         for (Wallet wallet : wallets) {
@@ -93,6 +99,13 @@ public class WalletList {
         return balances;
     }
 
+    /** Checks whether a wallet still has transactions before it can be deleted. */
+    public boolean hasTransactionsForWallet(String walletId) throws IOException {
+        TransactionList transactionList = new TransactionList(userId);
+        transactionList.loadTransactions();
+        return !transactionList.findByWallet(walletId).isEmpty();
+    }
+
     /** @return the wallet with this id, or null if there is none */
     public Wallet findWalletById(String walletId) {
         for (Wallet w : wallets) {
@@ -108,9 +121,17 @@ public class WalletList {
         return this.findWalletById(walletId) != null;
     }
 
-    public void addWallet(Wallet wallet) {
+    public void addWallet(Wallet wallet) throws IOException {
+        if (wallet == null || findWalletById(wallet.getWalletId()) != null) {
+            throw new IllegalArgumentException("Wallet must have a unique ID.");
+        }
         wallets.add(wallet);
-        saveWalletToFile();
+        try {
+            saveWalletToFile();
+        } catch (IOException e) {
+            wallets.remove(wallet);
+            throw e;
+        }
     }
 
     public String nextWalletId() {
@@ -133,11 +154,17 @@ public class WalletList {
      * (call it after using the wallet's setters).
      * @return false if no wallet with that id exists
      */
-    public boolean updateWallet(Wallet wallet) {
+    public boolean updateWallet(Wallet wallet) throws IOException {
         for (int i = 0; i < wallets.size(); i++) {
             if (wallets.get(i).getWalletId().equals(wallet.getWalletId())) {
+                Wallet previous = wallets.get(i);
                 wallets.set(i, wallet);
-                saveWalletToFile();
+                try {
+                    saveWalletToFile();
+                } catch (IOException e) {
+                    wallets.set(i, previous);
+                    throw e;
+                }
                 return true;
             }
         }
@@ -145,12 +172,26 @@ public class WalletList {
     }
 
     /** @return false if no wallet with that id exists */
-    public boolean deleteWallet(String walletId) {
-        boolean removed = wallets.removeIf(w -> w.getWalletId().equals(walletId));
-        if (removed) {
-            saveWalletToFile();
+    public boolean deleteWallet(String walletId) throws IOException {
+        int index = -1;
+        for (int i = 0; i < wallets.size(); i++) {
+            if (wallets.get(i).getWalletId().equals(walletId)) {
+                index = i;
+                break;
+            }
         }
-        return removed;
+        if (index < 0) {
+            return false;
+        }
+
+        Wallet removed = wallets.remove(index);
+        try {
+            saveWalletToFile();
+        } catch (IOException e) {
+            wallets.add(index, removed);
+            throw e;
+        }
+        return true;
     }
 
     private Path getFilePath() {
@@ -160,19 +201,15 @@ public class WalletList {
         return Paths.get("data", userId, "wallets.csv");
     }
 
-    private void saveWalletToFile() {
+    private void saveWalletToFile() throws IOException {
         List<String> lines = new ArrayList<>();
         lines.add(HEADER);
         for (Wallet w : wallets) {
             lines.add(convertWalletToLine(w));
         }
-        try {
-            Path file = getFilePath();
-            Files.createDirectories(file.getParent());
-            Files.write(file, lines);
-        } catch (IOException e) {
-            System.out.println("Could not save wallets file: " + e.getMessage());
-        }
+        Path file = getFilePath();
+        Files.createDirectories(file.getParent());
+        Files.write(file, lines, StandardCharsets.UTF_8);
     }
 
     /** Builds a Wallet from a CSV line. Throws IllegalArgumentException if malformed. */

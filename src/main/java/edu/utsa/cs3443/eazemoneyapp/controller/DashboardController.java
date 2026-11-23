@@ -4,9 +4,9 @@ import edu.utsa.cs3443.eazemoneyapp.model.dashboard.Dashboard;
 import edu.utsa.cs3443.eazemoneyapp.model.login.Account;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.util.StringConverter;
@@ -26,7 +26,7 @@ public class DashboardController extends BaseController {
     @FXML private Label currentBalanceLabel;
     @FXML private Label totalIncomeLabel;
     @FXML private Label totalExpenseLabel;
-    @FXML private StackedBarChart<String, Number> incomeExpenseChart;
+    @FXML private BarChart<String, Number> incomeExpenseChart;
     @FXML private CategoryAxis monthAxis;
     @FXML private NumberAxis amountAxis;
 
@@ -116,6 +116,8 @@ public class DashboardController extends BaseController {
             }
         });
 
+        incomeExpenseChart.setBarGap(0);
+        incomeExpenseChart.setCategoryGap(0);
         incomeExpenseChart.getData().setAll(List.of(incomeSeries, expenseSeries));
     }
 
