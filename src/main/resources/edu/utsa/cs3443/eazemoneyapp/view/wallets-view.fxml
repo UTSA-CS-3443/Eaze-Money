@@ -18,7 +18,7 @@
             <Label text="Wallets" styleClass="page-title"/>
             <Label text="Manage your wallets and balances" styleClass="wallets-subtitle"/>
         </VBox>
-        <Button fx:id="addWalletButton" text="Add Wallet" onAction="#onAddWallet" styleClass="wallet-add-button"/>
+        <Button fx:id="addWalletButton" text="+ Add Wallet" onAction="#onAddWallet" styleClass="wallet-add-button"/>
         <Button fx:id="editWalletButton" text="Edit Selected" onAction="#onEditWallet" styleClass="button-secondary"/>
         <Button fx:id="deleteWalletButton" text="Delete Selected" onAction="#onDeleteWallet" styleClass="button-secondary"/>
     </HBox>
