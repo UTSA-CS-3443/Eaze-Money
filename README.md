@@ -1,7 +1,4 @@
 # Eaze-Money
-Project Repo for Cache Keepers
-
-## Description
 Eaze Money is a JavaFX desktop application designed to help users take control of their personal spending habits. This app will provide a simple space to track spending, manage budgets, and gain financial insights about their spending habits.
 
 Eaze Money addresses a common problem of existing money tracking apps being cluttered with unnecessary or complicated features that an average user will never touch. Our app prioritizes simplicity, fast transaction entry, and a fully-offline ad-free experience. We aim to provide assistance to make personal budgeting accessible and private, therefore Eaze Money is a perfect choice for individuals seeking alternatives for subscription-based tools or refusing to link their sensitive banking information just to track basic spending.
@@ -11,6 +8,12 @@ Vinh Thanh Nguyen: https://github.com/ThanhVinh2869
 Thanh U Nguyen: https://github.com/tynnguyen4002  
 Siddhant Kapoor: https://github.com/Siddkap  
 Luna Jaimes Sesmas: https://github.com/LunaJaimes  
+
+## UML Diagram
+(To be updated)
+
+## Video Demo
+https://drive.google.com/file/d/1HqDYR_pgxXF-rQFELVr5y_Br-zKUzSF4/view?usp=drive_link
 
 ## Prerequisites
 
