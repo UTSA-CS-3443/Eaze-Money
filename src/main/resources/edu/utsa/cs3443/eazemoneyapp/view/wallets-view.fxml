@@ -2,36 +2,47 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="edu.utsa.cs3443.eazemoneyapp.controller.WalletsController"
-      spacing="20"
+      spacing="16"
       fillWidth="true"
       styleClass="wallets-page">
-    <HBox alignment="CENTER_LEFT" spacing="12">
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="wallets-header">
         <VBox spacing="5" HBox.hgrow="ALWAYS">
             <Label text="Wallets" styleClass="page-title"/>
             <Label text="Manage your wallets and balances" styleClass="wallets-subtitle"/>
         </VBox>
-        <Button fx:id="addWalletButton" text="+ Add Wallet" onAction="#onAddWallet" styleClass="wallet-add-button"/>
-        <Button fx:id="editWalletButton" text="Edit Selected" onAction="#onEditWallet" styleClass="button-secondary"/>
-        <Button fx:id="deleteWalletButton" text="Delete Selected" onAction="#onDeleteWallet" styleClass="button-secondary"/>
+        <Button fx:id="addWalletButton" text="Add Wallet" onAction="#onAddWallet"
+                styleClass="wallet-add-button"/>
     </HBox>
 
-    <TableView fx:id="walletsTable" styleClass="wallets-table">
-        <placeholder>
-            <Label text="No wallets yet. Add a wallet to get started." styleClass="wallets-empty"/>
-        </placeholder>
-        <columns>
-            <TableColumn fx:id="idColumn" text="ID" prefWidth="120"/>
-            <TableColumn fx:id="nameColumn" text="Name" prefWidth="220"/>
-            <TableColumn fx:id="startingBalanceColumn" text="Starting Balance" prefWidth="180"/>
-            <TableColumn fx:id="currentBalanceColumn" text="Current Balance" prefWidth="180"/>
-        </columns>
-    </TableView>
+    <Separator styleClass="wallets-divider"/>
+
+    <HBox alignment="CENTER_LEFT" spacing="0" styleClass="wallets-summary">
+        <Label text="Total across " styleClass="wallets-summary-label"/>
+        <Label fx:id="walletCountLabel" text="0 wallets" styleClass="wallets-summary-count"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="totalBalanceLabel" text="0.00" styleClass="wallets-summary-total"/>
+    </HBox>
+
+    <Separator styleClass="wallets-divider"/>
+
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="wallets-scroll"
+                VBox.vgrow="ALWAYS">
+        <content>
+            <VBox spacing="18" fillWidth="true" styleClass="wallets-card-container">
+                <GridPane fx:id="walletsGrid" hgap="18" vgap="18"/>
+                <Label fx:id="emptyWalletsLabel" text="No wallets yet. Add a wallet to get started."
+                       styleClass="wallets-empty"/>
+            </VBox>
+        </content>
+    </ScrollPane>
 </VBox>

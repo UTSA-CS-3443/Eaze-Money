@@ -4,81 +4,87 @@ import edu.utsa.cs3443.eazemoneyapp.model.wallet.Wallet;
 import edu.utsa.cs3443.eazemoneyapp.model.wallet.WalletList;
 import edu.utsa.cs3443.eazemoneyapp.util.Dialogs;
 import edu.utsa.cs3443.eazemoneyapp.util.Navigator;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
 public class WalletsController extends BaseController {
-    private static final double WALLET_ROW_HEIGHT = 40;
-    private static final double TABLE_HEADER_HEIGHT = 55;
-    private static final double EMPTY_TABLE_HEIGHT = 100;
+    private static final int MAX_WALLETS_PER_ROW = 4;
+    private static final double MIN_WALLET_CARD_WIDTH = 230;
+    private static final double WALLET_CARD_GAP = 18;
 
-    @FXML private TableView<Wallet> walletsTable;
-    @FXML private TableColumn<Wallet, String> idColumn;
-    @FXML private TableColumn<Wallet, String> nameColumn;
-    @FXML private TableColumn<Wallet, String> startingBalanceColumn;
-    @FXML private TableColumn<Wallet, String> currentBalanceColumn;
+    @FXML private GridPane walletsGrid;
+    @FXML private Label walletCountLabel;
+    @FXML private Label totalBalanceLabel;
+    @FXML private Label emptyWalletsLabel;
 
     private Map<String, BigDecimal> balances = Map.of();
+    private List<Wallet> wallets = List.of();
+    private int walletGridColumnCount;
 
     @FXML
     private void initialize() {
-        walletsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        walletsTable.setFixedCellSize(WALLET_ROW_HEIGHT);
-        walletsTable.prefHeightProperty().bind(Bindings.when(Bindings.isEmpty(walletsTable.getItems()))
-                .then(EMPTY_TABLE_HEIGHT)
-                .otherwise(Bindings.size(walletsTable.getItems())
-                        .multiply(WALLET_ROW_HEIGHT).add(TABLE_HEADER_HEIGHT)));
-        walletsTable.maxHeightProperty().bind(walletsTable.prefHeightProperty());
-        idColumn.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getWalletId()));
-        nameColumn.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getWalletName()));
-        startingBalanceColumn.setCellValueFactory(cell ->
-                new SimpleStringProperty(formatBalance(
-                        BigDecimal.valueOf(cell.getValue().getStartingBalance()))));
-        currentBalanceColumn.setCellValueFactory(cell ->
-                new SimpleStringProperty(formatBalance(
-                        balances.getOrDefault(cell.getValue().getWalletId(),
-                                BigDecimal.valueOf(cell.getValue().getStartingBalance())))));
+        walletsGrid.setMaxWidth(Double.MAX_VALUE);
+        walletsGrid.widthProperty().addListener((observable, oldWidth, newWidth) -> updateWalletGrid());
+        updateWalletGrid();
     }
 
     @Override
     public void onShow() {
         if (getAccount() == null) {
             showError("Please sign in to view your wallets.");
-            walletsTable.getItems().clear();
+            balances = Map.of();
+            wallets = List.of();
+            updateSummary();
+            renderWalletCards();
             return;
         }
 
         try {
             WalletList walletList = getAccount().getWalletList();
             balances = walletList.loadWalletBalances(getAccount().getUserID());
-            walletsTable.getItems().setAll(walletList.getWallets());
-            walletsTable.refresh();
+            wallets = new ArrayList<>(walletList.getWallets());
+            updateSummary();
+            updateWalletGrid();
+            renderWalletCards();
         } catch (IOException e) {
-            walletsTable.getItems().clear();
+            balances = Map.of();
+            wallets = List.of();
+            updateSummary();
+            updateWalletGrid();
+            renderWalletCards();
             showError("Could not load wallets: " + e.getMessage());
         }
     }
 
     @FXML
     private void onAddWallet() {
+        if (getAccount() == null) {
+            showError("Please sign in to add a wallet.");
+            return;
+        }
         showWalletEditor(null, null).ifPresent(details -> {
             WalletList walletList = getAccount().getWalletList();
             try {
@@ -92,14 +98,7 @@ public class WalletsController extends BaseController {
         });
     }
 
-    @FXML
-    private void onEditWallet() {
-        Wallet selected = walletsTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            showError("Please select a wallet to edit.");
-            return;
-        }
-
+    private void onEditWallet(Wallet selected) {
         showWalletEditor(selected.getWalletName(),
                 Double.toString(selected.getStartingBalance())).ifPresent(details -> {
             WalletList walletList = getAccount().getWalletList();
@@ -117,13 +116,7 @@ public class WalletsController extends BaseController {
         });
     }
 
-    @FXML
-    private void onDeleteWallet() {
-        Wallet selected = walletsTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            showError("Please select a wallet to delete.");
-            return;
-        }
+    private void onDeleteWallet(Wallet selected) {
         if (!Dialogs.confirm("Are you sure you want to delete wallet \""
                 + selected.getWalletName() + "\"?")) {
             return;
@@ -150,8 +143,119 @@ public class WalletsController extends BaseController {
         onShow();
     }
 
+    private void updateSummary() {
+        int walletCount = wallets.size();
+        walletCountLabel.setText(walletCount + (walletCount == 1 ? " wallet" : " wallets"));
+
+        BigDecimal total = BigDecimal.ZERO;
+        for (Wallet wallet : wallets) {
+            total = total.add(balances.getOrDefault(wallet.getWalletId(),
+                    BigDecimal.valueOf(wallet.getStartingBalance())));
+        }
+        totalBalanceLabel.setText(formatBalance(total));
+    }
+
+    private void updateWalletGrid() {
+        double width = walletsGrid.getWidth();
+        int columns = width <= 0 ? 1 : (int) ((width + WALLET_CARD_GAP)
+                / (MIN_WALLET_CARD_WIDTH + WALLET_CARD_GAP));
+        columns = Math.max(1, Math.min(MAX_WALLETS_PER_ROW, columns));
+        if (wallets.isEmpty()) {
+            columns = 1;
+        } else {
+            columns = Math.min(columns, wallets.size());
+        }
+        if (columns == walletGridColumnCount) {
+            return;
+        }
+
+        walletGridColumnCount = columns;
+        walletsGrid.getColumnConstraints().clear();
+        for (int i = 0; i < columns; i++) {
+            ColumnConstraints constraints = new ColumnConstraints();
+            constraints.setPercentWidth(100.0 / columns);
+            constraints.setHgrow(Priority.ALWAYS);
+            walletsGrid.getColumnConstraints().add(constraints);
+        }
+        renderWalletCards();
+    }
+
+    private void renderWalletCards() {
+        walletsGrid.getChildren().clear();
+        emptyWalletsLabel.setVisible(wallets.isEmpty());
+        emptyWalletsLabel.setManaged(wallets.isEmpty());
+        for (int i = 0; i < wallets.size(); i++) {
+            Wallet wallet = wallets.get(i);
+            walletsGrid.add(createWalletCard(wallet), i % walletGridColumnCount,
+                    i / walletGridColumnCount);
+        }
+    }
+
+    private VBox createWalletCard(Wallet wallet) {
+        BigDecimal startingBalance = BigDecimal.valueOf(wallet.getStartingBalance());
+        BigDecimal currentBalance = balances.getOrDefault(wallet.getWalletId(), startingBalance);
+        BigDecimal change = currentBalance.subtract(startingBalance);
+
+        Label name = new Label(wallet.getWalletName());
+        name.getStyleClass().add("wallet-card-name");
+        name.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(name, Priority.ALWAYS);
+
+        MenuItem editItem = new MenuItem("Edit");
+        editItem.setOnAction(event -> onEditWallet(wallet));
+
+        MenuItem deleteItem = new MenuItem("Delete");
+        deleteItem.setOnAction(event -> onDeleteWallet(wallet));
+
+        MenuButton menu = new MenuButton("⋮", null, editItem, deleteItem);
+        menu.getStyleClass().add("wallet-card-menu");
+
+        HBox heading = new HBox(name, menu);
+        heading.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        Label currentTitle = new Label("Current Balance");
+        currentTitle.getStyleClass().add("wallet-card-section-label");
+        Label currentAmount = new Label(formatBalance(currentBalance));
+        currentAmount.getStyleClass().add("wallet-card-current-balance");
+
+        Region divider = new Region();
+        divider.setMinHeight(1);
+        divider.setPrefHeight(1);
+        divider.setMaxHeight(1);
+        divider.getStyleClass().add("wallet-card-divider");
+
+        Label startingTitle = new Label("Starting Balance");
+        startingTitle.getStyleClass().add("wallet-card-section-label");
+
+        Label startingAmount = new Label(formatBalance(startingBalance));
+        startingAmount.getStyleClass().add("wallet-card-starting-balance");
+
+        Label changeAmount = new Label(formatChange(change));
+        changeAmount.getStyleClass().add(change.signum() >= 0
+                ? "wallet-card-gain" : "wallet-card-loss");
+
+        VBox startingDetails = new VBox(4, startingTitle, startingAmount);
+        HBox footer = new HBox(startingDetails, changeAmount);
+        footer.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        footer.setSpacing(8);
+        HBox.setHgrow(startingDetails, Priority.ALWAYS);
+
+        VBox card = new VBox(14, heading, currentTitle, currentAmount, divider, footer);
+        card.setMaxWidth(Double.MAX_VALUE);
+        card.getStyleClass().add("wallet-card");
+        return card;
+    }
+
+    private static String formatChange(BigDecimal change) {
+        return (change.signum() >= 0 ? "+" : "-") + formatBalance(change.abs());
+    }
+
     private static String formatBalance(BigDecimal balance) {
-        return "$" + balance.setScale(2, RoundingMode.HALF_UP).toPlainString();
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
+        formatter.setMinimumFractionDigits(2);
+        formatter.setMaximumFractionDigits(2);
+        formatter.setRoundingMode(RoundingMode.HALF_UP);
+        return formatter.format(balance);
     }
 
     /** Opens the wallet add/edit form. */

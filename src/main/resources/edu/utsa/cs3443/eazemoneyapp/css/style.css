@@ -140,11 +140,6 @@
     -fx-font-size: 13px;
     -fx-text-fill: -primary;
 }
-.wallets-scroll {
-    -fx-background-color: transparent;
-    -fx-background: transparent;
-}
-
 /* ===== Wallet Page (Vinh) ===== */
 
 .wallets-page {
@@ -177,30 +172,125 @@
     -fx-background-color: -color2;
 }
 
-.wallets-table {
-    -fx-background-color: white;
+.wallets-header {
+    -fx-alignment: center-left;
+}
+
+.wallets-divider {
+    -fx-padding: 0;
+}
+
+.wallets-divider .line {
     -fx-border-color: -line;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
+    -fx-border-width: 1 0 0 0;
 }
 
-.wallets-table .column-header-background {
-    -fx-background-color: -primary-soft;
+.wallets-summary {
+    -fx-padding: 2 0;
 }
 
-.wallets-table .column-header {
-    -fx-background-color: transparent;
-    -fx-padding: 12 8 12 8;
+.wallets-summary-label {
+    -fx-text-fill: -ink;
+    -fx-font-size: 15px;
 }
 
-.wallets-table .column-header .label {
-    -fx-text-fill: -primary-dark;
+.wallets-summary-count {
+    -fx-text-fill: -ink;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
 }
 
-.wallets-empty {
-    -fx-text-fill: -color-black;
+.wallets-summary-total {
+    -fx-text-fill: -ink;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.wallets-card-container {
+    -fx-padding: 2 2 12 2;
+}
+
+.wallet-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: -line;
+    -fx-border-radius: 12;
+    -fx-padding: 20;
+}
+
+.wallet-card-name {
+    -fx-text-fill: -ink;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.wallet-card-menu {
+    -fx-background-color: transparent;
+    -fx-padding: 0 4;
+    -fx-text-fill: -muted;
     -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.wallet-card-menu:hover {
+    -fx-background-color: -color10;
+    -fx-background-radius: 6;
+}
+
+.wallet-card-section-label {
+    -fx-text-fill: -muted;
+    -fx-font-size: 13px;
+}
+
+.wallet-card-current-balance {
+    -fx-text-fill: -ink;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.wallet-card-divider {
+    -fx-background-color: -line;
+}
+
+.wallet-card-starting-balance {
+    -fx-text-fill: -ink;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.wallet-card-gain,
+.wallet-card-loss {
+    -fx-background-radius: 999;
+    -fx-padding: 6 9;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.wallet-card-gain {
+    -fx-background-color: #E5F5E9;
+    -fx-text-fill: #246B3B;
+}
+
+.wallet-card-loss {
+    -fx-background-color: #FCE8E8;
+    -fx-text-fill: #9B2828;
+}
+
+.wallets-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.wallets-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.wallets-empty {
+    -fx-text-fill: -muted;
+    -fx-font-size: 15px;
+    -fx-padding: 24 0;
 }
 
 /* ===== Dashboard (Vinh) ===== */
